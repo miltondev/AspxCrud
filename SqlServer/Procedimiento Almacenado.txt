@@ -1,0 +1,29 @@
+CREATE PROC [dbo].[Sp_GridCrud]  
+(  
+@EmpId int=0,@FirstName varchar(50)=Null,@LastName varchar(50)=Null,@PhoneNumber nvarchar(15)=Null,  
+@EmailAddress nvarchar(50)=Null,@Salary decimal=Null,@Event varchar(10)  
+)  
+AS   
+BEGIN  
+    IF(@Event='Select')  
+    BEGIN  
+    SELECT * FROM Employee ORDER BY FirstName ASC;  
+    END  
+  
+    ELSE IF(@Event='Add')  
+    BEGIN  
+    INSERT INTO Employee (FirstName,LastName,PhoneNumber,EmailAddress,Salary,CreatedDate) VALUES(@FirstName,@LastName,@PhoneNumber,@EmailAddress,@Salary,GETDATE());  
+    END  
+  
+    ELSE IF(@Event='Update')  
+    BEGIN  
+    UPDATE Employee SET FirstName=@FirstName,LastName=@LastName,PhoneNumber=@PhoneNumber,EmailAddress=@EmailAddress,Salary=@Salary where Id=@EmpId;  
+    END  
+  
+    ELSE  
+    BEGIN  
+    DELETE FROM Employee WHERE Id=@EmpId;  
+    END  
+END  
+  
+GO  
